@@ -3,7 +3,6 @@ package org.chernovia.lib.net.zugserv;
 import java.util.ArrayList;
 
 public interface ZugServ {
-	public boolean PASSWORD = false;
 	public static enum ServType { TYPE_SOCK, TYPE_WEBSOCK, TYPE_IRC, TYPE_TWITCH, TYPE_UNKNOWN };
 	public static String 
 	MSG_TXT = "txt",

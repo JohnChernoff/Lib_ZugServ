@@ -15,11 +15,11 @@ import org.eclipse.jetty.websocket.api.extensions.Frame;
 @WebSocket
 public class WebSock {
 	String sock_name;
-	
 	private static final Logger LOG = Log.getLogger(WebSock.class);
 	private ArrayList<WebSockListener> listeners;
     public Session session;
-    
+	public long last_msg;
+	
     public void addListener(WebSockListener l) { listeners.add(l); }
     public void removeListener(WebSockListener l) { listeners.remove(l); }
 
@@ -47,6 +47,7 @@ public class WebSock {
     public void onConnect(Session sess) {
         LOG.info("onConnect({})",sess);
         session = sess; 
+        last_msg = System.currentTimeMillis();
     }
 
     @OnWebSocketClose
@@ -63,6 +64,7 @@ public class WebSock {
 
     @OnWebSocketMessage
     public void onMessage(String msg) {
+    	last_msg = System.currentTimeMillis();
     	//LOG.info(sock_name + "---> NEW MESSAGE: " + msg + "," + listeners.size());
         for (WebSockListener l : listeners) l.sock_msg(this,msg);
     }

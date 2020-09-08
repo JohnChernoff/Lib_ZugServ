@@ -2,12 +2,13 @@ package org.chernovia.lib.net.zugserv;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public abstract class ServAdapter implements ZugServ {
 	
+	public boolean GENERATE_LOGIN_NAME = false;
+	public boolean PASSWORD = false;
 	public static String CR = "\n";  
 	private ConnListener listener;
 	private ArrayList<Connection> conns = new ArrayList<Connection>();
@@ -20,8 +21,18 @@ public abstract class ServAdapter implements ZugServ {
 	public void connect(Connection conn) {
 		log("Accepting connection #" + conns.size());
 		conns.add(conn);
-		conn.setStatus(Connection.STATUS_LOGIN);
-		conn.tell(MSG_LOGIN,"Hello! Please enter your name."); 
+		if (GENERATE_LOGIN_NAME) {
+			conn.setHandle(generateLoginName()); 
+			loggedIn(conn);
+		}
+		else {
+			conn.setStatus(Connection.STATUS_LOGIN);
+			conn.tell(MSG_LOGIN,"Hello! Please enter your name.");
+		}
+	}
+	
+	public String generateLoginName() {
+		return "Guest " + conns.size();
 	}
 	
 	public void loggedIn(Connection conn) {

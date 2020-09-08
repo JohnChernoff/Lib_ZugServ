@@ -28,7 +28,6 @@ public class Ban {
 		return t > banStart && t < banEnd;
 	}
 	
-	//private boolean addressMatch(InetAddress a) { return addressMatch(a,-1); }
 	private boolean addressMatch(InetAddress a, int level) {
 		if (address == null || a == null) return false;
 		if (level == -1) return a.equals(address);
